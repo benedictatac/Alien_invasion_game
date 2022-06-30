@@ -1,7 +1,7 @@
 import sys
 import pygame
 from settings import Settings
-from ship import Ship
+from character import GokuSprite
 
 
 
@@ -16,7 +16,15 @@ class AlienInvasion:
       self.settings = Settings()
       self.screen = pygame.display.set_mode(
          (self.settings.screen_width, self.settings.screen_height))
-      self.ship = Ship(self)
+      
+      #creating our sprite object
+      self.character = GokuSprite(self)
+
+      #creating a group with our sprite
+      self.my_group = pygame.sprite.Group(self.character)
+
+      #getting the pygame clock for handling fps
+      self.clock = pygame.time.Clock()
 
       pygame.display.set_caption("Alien Invasion")
      
@@ -33,7 +41,19 @@ class AlienInvasion:
          
          #Redraw the screen during each pass through the loop
          self.screen.fill(self.settings.bg_color)
-         self.ship.blitme()
+
+
+         #updating the sprite
+         self.my_group.update()
+
+         #drawing the sprite
+         self.my_group.draw(self.screen)
+
+         #updating the display
+         pygame.display.update()
+
+         #delaying the loop with clock tick for 10FPS
+         self.clock.tick(10)         
          
           # Make the most recently drawn screen visible.
          pygame.display.flip()
