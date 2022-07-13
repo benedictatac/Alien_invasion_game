@@ -1,3 +1,4 @@
+from pickle import NONE
 import sys
 import pygame
 from settings import Settings
@@ -33,33 +34,44 @@ class AlienInvasion:
    def run_game(self):
       """Start the main loop for the game."""
       while True:
+
+         self._check_events_()
+         self._update_screen()
+
+         
+   #This takes in the decision on closing the window      
+   def _check_events_(self):
          # Watch for keyboard and mouse events.
          for event in pygame.event.get():
             if event.type == pygame.QUIT:
                sys.exit()
-            
-         
-         #Redraw the screen during each pass through the loop
-         self.screen.fill(self.settings.bg_color)
+            elif event.type == pygame.KEYDOWN:
+               if event.key == pygame.K_SPACE:
+                  self.character.animate()
 
+
+    #This function takes in the code that draws the bg, ship and flips the screen    
+   def _update_screen(self): 
+       #Redraw the screen during each pass through the loop
+      self.screen.fill(self.settings.bg_color)
 
          #updating the sprite
-         self.my_group.update()
+      self.my_group.update()
 
          #drawing the sprite
-         self.my_group.draw(self.screen)
+      self.my_group.draw(self.screen)
 
          #updating the display
-         pygame.display.update()
+      pygame.display.update()
 
-         #delaying the loop with clock tick for 10FPS
-         self.clock.tick(10)         
+         #delaying the loop with clock tick for 50FPS
+      self.clock.tick(24)         
          
           # Make the most recently drawn screen visible.
-         pygame.display.flip()
+      pygame.display.flip()
 
 
-         
+
 
 
 if __name__ == '__main__':
